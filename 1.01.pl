@@ -1,30 +1,41 @@
-my_last(Last, [Last]).
-my_last(Last, [_,A|As]) :-
-    my_last(Last, [A|As]).
+list_last(List, Last) :-
+    must_be(list_or_partial_list, List),
+    list_last_(List, Last).
 
-:- begin_tests(my_last).
+list_last_([Last], Last).
+list_last_([_,A|As], Last) :-
+    list_last_([A|As], Last).
+
+:- begin_tests(list_last).
 
 test(empty, [fail]) :-
-    my_last(_, []).
+    list_last([], _).
 
 test(singleton_forward, [true(X == 5)]) :-
-    my_last(X, [5]).
+    list_last([5], X).
 
 test(singleton_backward, [true(X == 5)]) :-
-    my_last(5, [X]).
+    list_last([X], 5).
 
 test(singleton_fail, [fail]) :-
-    my_last(5, [4]).
+    list_last([4], 5).
 
 test(many_forward, [true(X == 5)]) :-
-    my_last(5, [_, _, X]).
+    list_last([_, _, 5], X).
 
 test(many_backward, [true(X == 5)]) :-
-    my_last(X, [_, _, 5]).
+    list_last([_, _, X], 5).
 
 test(many_fail, [fail]) :-
-    my_last(5, [_, _, 4]).
+    list_last([_, _, 4], 5).
 
-:- end_tests(my_last).
+test(general, [nondet, true(X == Last)]) :-
+    list_last(List, Last),
+    List = [_,_,_,X].
+
+test(type_error, [error(type_error(list, potato))]) :-
+    list_last(potato, _).
+
+:- end_tests(list_last).
 
 :- run_tests.
