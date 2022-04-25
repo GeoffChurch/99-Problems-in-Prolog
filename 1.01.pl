@@ -6,6 +6,12 @@ list_last_([Last], Last).
 list_last_([_,A|As], Last) :-
     list_last_([A|As], Last).
 
+%% Alternate solution using DCG notation and built-in reverse:
+%% list_last_(X) --> reverse, [X].
+%% list_last(List, Last) :-
+%%     must_be(list_or_partial_list, List),
+%%     phrase(list_last_(Last), List, _).
+
 :- begin_tests(list_last).
 
 test(empty, [fail]) :-
