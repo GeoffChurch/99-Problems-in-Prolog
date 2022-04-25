@@ -6,6 +6,12 @@ list_penultimate_([X,_], X).
 list_penultimate_([_,A,B|T], X) :-
     list_penultimate_([A,B|T], X).
 
+%% Alternate solution using DCG notation and built-in reverse:
+%% list_penultimate(List, Last) :-
+%%     must_be(list_or_partial_list, List),
+%%     phrase(list_penultimate_(Last), List, _).
+%% list_penultimate_(X) --> reverse, [_, X].
+
 :- begin_tests(list_penultimate).
 
 test(empty, [fail]) :-
